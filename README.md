@@ -125,5 +125,10 @@ npm run dev
 - Admin controls (Add, Edit, Delete books).
 - User authentication via tokens.
 
----
+
+***ADMIN***
+- Email = Gotya@12345
+- Password = Test
+
+  ---
 
