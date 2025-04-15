@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css"; 
+import config from "../config/config";
 
 const Books = () => {
     
@@ -19,7 +20,7 @@ const Books = () => {
             setIsAdmin(isAdmin === "true");
 
             try {
-                const response = await fetch("http://127.0.0.1:8000/api/books/list/", {
+                const response = await fetch(config.ListUrl, {
                     method: "GET",
                     headers: {
                         "Authorization": `Token ${token}`,
@@ -49,7 +50,7 @@ const Books = () => {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/books/list/", {
+            const response = await fetch(config.ListUrl, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -73,7 +74,7 @@ const Books = () => {
         const token = localStorage.getItem("token");
         const isAdmin = localStorage.getItem("isAdmin");
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/books/list/${editBook.ID}/`, {
+            const response = await fetch(`${config.ListUrl}${editBook.ID}/`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -98,7 +99,7 @@ const Books = () => {
         const isAdmin = localStorage.getItem("isAdmin");
         try {
             console.log(id)
-            const response = await fetch(`http://127.0.0.1:8000/api/books/list/${id}/`, {
+            const response = await fetch(`${config.ListUrl}${id}/`, {
                 method: "DELETE",
                 headers: { "Authorization": `Token ${token}` },
             });

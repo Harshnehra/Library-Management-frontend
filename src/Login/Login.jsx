@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import Styles from "./Login.module.css"
 import {Link , useNavigate} from "react-router-dom"
+import config from '../config/config';
 
 
 function Login() {
@@ -15,7 +16,7 @@ function Login() {
     e.preventDefault();
     
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/admin/login/", {
+      const response = await fetch(config.LoginUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

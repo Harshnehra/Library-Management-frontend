@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Styles from "./Signup.module.css"
 import {Link} from "react-router-dom"
+import config from '../config/config';
 
 function Signup() {
 
@@ -13,7 +14,7 @@ function Signup() {
     e.preventDefault();
     
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/admin/signup/", {
+      const response = await fetch(config.SignupUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
