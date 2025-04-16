@@ -1,9 +1,7 @@
 const config = {
-
-    LoginUrl: String(import.meta.env.VITE_LOGIN_URL),
-    SignupUrl: String(import.meta.env.VITE_SIGNUP_URL),
-    ListUrl: String(import.meta.env.VITE_LIST_URL),
-    
+    LoginUrl: import.meta.env.VITE_LOGIN_URL?.replace(/"/g, '') || '',
+    SignupUrl: import.meta.env.VITE_SIGNUP_URL?.replace(/"/g, '') || '',
+    ListUrl: import.meta.env.VITE_LIST_URL?.replace(/"/g, '') || '',
 }
 
 export default config;

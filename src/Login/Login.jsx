@@ -16,28 +16,33 @@ function Login() {
     e.preventDefault();
     
     try {
-      const response = await fetch(config.LoginUrl, {
+      const loginUrl = config.LoginUrl.replace(/"/g, ''); // Remove any quotes from the URL
+      const response = await fetch(loginUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
         },
+        mode: 'cors',
         credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
 
-      const result = await response.json();
-
-      
-
       if (!response.ok) {
-        throw new Error(result.message || "Login failed");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Login failed");
       }
 
-      localStorage.setItem("token", result.token);
-      localStorage.setItem("isAdmin", result.is_admin); 
-      setMessage("Login successful!");
-      navigate("/books");
+      const result = await response.json();
+
+      if (result.token) {
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("isAdmin", result.is_admin); 
+        setMessage("Login successful!");
+        navigate("/books");
+      } else {
+        throw new Error("No token received");
+      }
     } catch (error) {
       setMessage(error.message);
     }
