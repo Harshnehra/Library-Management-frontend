@@ -15,8 +15,15 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     
+    if (!email || !password) {
+      setMessage("Please enter both email and password");
+      return;
+    }
+
     try {
-      const loginUrl = config.LoginUrl.replace(/"/g, ''); // Remove any quotes from the URL
+      const loginUrl = config.LoginUrl.replace(/"/g, '');
+      console.log('Attempting login with:', { email, password });
+      
       const response = await fetch(loginUrl, {
         method: "POST",
         headers: {
@@ -28,23 +35,25 @@ function Login() {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Login failed");
-      }
-
+      console.log('Response status:', response.status);
       const result = await response.json();
+      console.log('Response data:', result);
+
+      if (!response.ok) {
+        throw new Error(result.message || "Login failed");
+      }
 
       if (result.token) {
         localStorage.setItem("token", result.token);
         localStorage.setItem("isAdmin", result.is_admin); 
-        setMessage("Login successful!");
+        setMessage(result.message || "Login successful!");
         navigate("/books");
       } else {
         throw new Error("No token received");
       }
     } catch (error) {
-      setMessage(error.message);
+      console.error('Login error:', error);
+      setMessage(error.message || "An error occurred during login");
     }
   };
 
