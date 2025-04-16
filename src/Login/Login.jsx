@@ -21,8 +21,12 @@ function Login() {
     }
 
     try {
-      const loginUrl = config.LoginUrl.replace(/"/g, '');
-      console.log('Attempting login with:', { email, password });
+      const loginUrl = config.LoginUrl;
+      console.log('Login attempt with:', { 
+        url: loginUrl,
+        email: email,
+        hasPassword: !!password 
+      });
       
       const response = await fetch(loginUrl, {
         method: "POST",
@@ -31,7 +35,7 @@ function Login() {
           "Accept": "application/json",
         },
         mode: 'cors',
-        credentials: 'include',
+        credentials: 'same-origin',
         body: JSON.stringify({ email, password }),
       });
 
@@ -40,15 +44,18 @@ function Login() {
       console.log('Response data:', result);
 
       if (!response.ok) {
+        console.error('Login failed:', result);
         throw new Error(result.message || "Login failed");
       }
 
       if (result.token) {
+        console.log('Login successful, token received');
         localStorage.setItem("token", result.token);
         localStorage.setItem("isAdmin", result.is_admin); 
         setMessage(result.message || "Login successful!");
         navigate("/books");
       } else {
+        console.error('No token in response:', result);
         throw new Error("No token received");
       }
     } catch (error) {
